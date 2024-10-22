@@ -34,7 +34,7 @@ public class TimingManager : MonoBehaviour
 
     [SerializeField] float minimumResultTime = 0.5f;
 
-   public GameObject selectTimeLine;
+    public GameObject selectTimeLine;
     public Slider timingUI;
 
    

@@ -22,11 +22,6 @@ public class EnergyUI : MonoBehaviour
         InputManager = GameObject.Find("InputManager");
     }
 
-    void Start()
-    {
-
-    }
-
     //energy_state
     void Charge()
     {
@@ -93,10 +88,10 @@ public class EnergyUI : MonoBehaviour
 
     void Update()
     {
-        if (InputManager.GetComponent<InputManager>().a == 1)
+        if (InputManager.GetComponent<InputManager>().chanceCount == 1)
         {
             Charge();
-            InputManager.GetComponent<InputManager>().a = 0;
+            InputManager.GetComponent<InputManager>().chanceCount = 0;
         }
     }
 }

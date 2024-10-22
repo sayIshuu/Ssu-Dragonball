@@ -4,11 +4,11 @@ using UnityEngine;
 
 public enum Sign
 {
-    None,       //ÃÊ±â»óÅÂ, ¹ÌÀÔ·Â
-    Pa,         //°ø°İ
-    Block,      //¸·±â
-    Charge,     //±â¸ğÀ¸±â
-    EnergyPa    //Ç®Â÷Áö¿¡³ÊÁöÆÄ
+    None,       //ì´ˆê¸°ìƒíƒœ, ë¯¸ì…ë ¥
+    Pa,         //ê³µê²©
+    Block,      //ë§‰ê¸°
+    Charge,     //ê¸°ëª¨ìœ¼ê¸°
+    EnergyPa    //í’€ì°¨ì§€ì—ë„ˆì§€íŒŒ
 }
 
 public class InputManager : MonoBehaviour
@@ -21,20 +21,7 @@ public class InputManager : MonoBehaviour
     public int player1Energy = 0;
     public int player2Energy = 0;
 
-    public int a = 0;
-
-    /*
-    public AudioSource leftattack;
-    public AudioSource rightattack;
-    public AudioSource leftcharge;
-    public AudioSource rightcharge;
-    public AudioSource block;
-    public AudioSource leftsuperattack;
-    public AudioSource rightsuperattack;
-    public AudioSource lefthit;
-    public AudioSource righthit;
-    public AudioSource death;
-    */
+    public int chanceCount = 0;
 
     public AudioSource player1;
     public AudioSource player2;
@@ -50,24 +37,18 @@ public class InputManager : MonoBehaviour
     public AudioClip righthitclip;
     public AudioClip deathclip;
 
-    void Start()
-    {
-
-    }
-
-
-//======================¼öÁ¤¿¹Á¤========================
-//: ÃßÈÄ¿¡ ¸®ÅÏ°ªÀÌ ÀÖ´Â ÇÔ¼ö·Î º¯°æÇÏ¿© ¾Æ·¡ Debug.Log -> return À¸·Î ¼öÁ¤ÇÒ¿¹Á¤ÀÔ´Ï´Ù.
-//  ±× ¸®ÅÏ°ªÀ» TimingManagerÀÇ °á°úÈ®ÀÎÇÔ¼ö¿¡¼­ ¹Ş¾Æ¿À¸é µË´Ï´Ù.
-//  Ãß°¡·Î ¹İº¹µÇ´Â ÄÚµå°¡ ¸¹¾Æ¼­ ´õ·¯¿îµ¥ ÀÏ´Ü ±â´É±¸ÇöºÎÅÍ ÇÏ°í ÃßÈÄ¿¡ ¼öÁ¤ÇÒ ¼ö ÀÖÀ¸¸é ÇÏ°Ú½À´Ï´Ù.
+    //======================ìˆ˜ì •ì˜ˆì •========================
+    //: ì¶”í›„ì— ë¦¬í„´ê°’ì´ ìˆëŠ” í•¨ìˆ˜ë¡œ ë³€ê²½í•˜ì—¬ ì•„ë˜ Debug.Log -> return ìœ¼ë¡œ ìˆ˜ì •í• ì˜ˆì •ì…ë‹ˆë‹¤.
+    //  ê·¸ ë¦¬í„´ê°’ì„ TimingManagerì˜ ê²°ê³¼í™•ì¸í•¨ìˆ˜ì—ì„œ ë°›ì•„ì˜¤ë©´ ë©ë‹ˆë‹¤.
+    //  ì¶”ê°€ë¡œ ë°˜ë³µë˜ëŠ” ì½”ë“œê°€ ë§ì•„ì„œ ë”ëŸ¬ìš´ë° ì¼ë‹¨ ê¸°ëŠ¥êµ¬í˜„ë¶€í„° í•˜ê³  ì¶”í›„ì— ìˆ˜ì •í•  ìˆ˜ ìˆìœ¼ë©´ í•˜ê² ìŠµë‹ˆë‹¤.
     public void DetermineWinner()
     {
-        if(player1Choice == Sign.None)
+        if (player1Choice == Sign.None)
         {
             /*
             if (player2Choice == Sign.None)
             {
-                Debug.Log("Å°ÀÔ·Â´ë±â");
+                Debug.Log("í‚¤ì…ë ¥ëŒ€ê¸°");
             }
             */
             if (player2Choice == Sign.Charge)
@@ -93,10 +74,10 @@ public class InputManager : MonoBehaviour
                 player2.clip = rightattackclip;
                 player1.Play(); //audio in
                 player2.Play(); //audio in
-               // Debug.Log("Player 2ÀÇ °ø°İ ¼º°ø!");
+                                // Debug.Log("Player 2ì˜ ê³µê²© ì„±ê³µ!");
                 HPmanager.Instance.player01HpDown(1);
-                player2Energy--;    
-                if(player1Energy >0)
+                player2Energy--;
+                if (player1Energy > 0)
                     player1Energy--;
             }
             else if (player2Choice == Sign.EnergyPa)
@@ -107,17 +88,17 @@ public class InputManager : MonoBehaviour
                 player2.clip = rightsuperattackclip;
                 player1.Play(); //audio in
                 player2.Play(); //audio in
-                //Debug.Log("Player 2ÀÇ °ø°İ ¼º°ø!");
+                //Debug.Log("Player 2ì˜ ê³µê²© ì„±ê³µ!");
                 HPmanager.Instance.player01HpDown(3);
-                player2Energy = 0;  player1Energy = 0;
+                player2Energy = 0; player1Energy = 0;
             }
         }
 
 
-        //ÇÃ·¹ÀÌ¾î1ÀÇ °ø°İ
+        //í”Œë ˆì´ì–´1ì˜ ê³µê²©
         if (player1Choice == Sign.Pa)
         {
-            if(player2Choice == Sign.None)
+            if (player2Choice == Sign.None)
             {
                 AnimatorLeft.Instance.Pa();
                 AnimatorRight.Instance.Damaged();
@@ -139,10 +120,10 @@ public class InputManager : MonoBehaviour
                 player2.Play(); //audio in
                 if (player2Energy > 0)
                     player2Energy--;
-                //Debug.Log("Player 1ÀÇ °ø°İ ¼º°ø!");
-                HPmanager.Instance.player02HpDown(1);   //ÀÏ¹İ Paµ¥¹ÌÁö´Â ¸ğÀº±â ¾ç -> 10À¸·Î °íÁ¤
+                //Debug.Log("Player 1ì˜ ê³µê²© ì„±ê³µ!");
+                HPmanager.Instance.player02HpDown(1);   //ì¼ë°˜ Paë°ë¯¸ì§€ëŠ” ëª¨ì€ê¸° ì–‘ -> 10ìœ¼ë¡œ ê³ ì •
             }
-            else if(player2Choice == Sign.Block)
+            else if (player2Choice == Sign.Block)
             {
                 AnimatorLeft.Instance.Pa();
                 AnimatorRight.Instance.Block();
@@ -152,7 +133,7 @@ public class InputManager : MonoBehaviour
                 player2.Play(); //audio in
                 //Debug.Log("Blocking");
             }
-            else if(player2Choice == Sign.Pa)
+            else if (player2Choice == Sign.Pa)
             {
                 AnimatorLeft.Instance.Pa();
                 AnimatorRight.Instance.Pa();
@@ -160,10 +141,10 @@ public class InputManager : MonoBehaviour
                 player2.clip = rightattackclip;
                 player1.Play(); //audio in
                 player2.Play(); //audio in
-                //Debug.Log("Pa »ó¼â");
+                //Debug.Log("Pa ìƒì‡„");
                 player2Energy--;
             }
-            else if(player2Choice == Sign.EnergyPa)
+            else if (player2Choice == Sign.EnergyPa)
             {
                 AnimatorRight.Instance.EnergyPa();
                 AnimatorLeft.Instance.Damaged();
@@ -171,18 +152,18 @@ public class InputManager : MonoBehaviour
                 player2.clip = rightsuperattackclip;
                 player1.Play(); //audio in
                 player2.Play(); //audio in
-                //Debug.Log("Player 2ÀÇ °ø°İ ¼º°ø!");
+                //Debug.Log("Player 2ì˜ ê³µê²© ì„±ê³µ!");
                 HPmanager.Instance.player01HpDown(3);
-                player2Energy = 0;  player1Energy = 0;
+                player2Energy = 0; player1Energy = 0;
             }
-            if(player1Energy > 0)
+            if (player1Energy > 0)
                 player1Energy--;
         }
 
-        //ÇÃ·¹ÀÌ¾î1ÀÇ ¸·±â
+        //í”Œë ˆì´ì–´1ì˜ ë§‰ê¸°
         if (player1Choice == Sign.Block)
         {
-            if(player2Choice == Sign.None)
+            if (player2Choice == Sign.None)
             {
                 AnimatorLeft.Instance.Block();
                 player1.clip = blockclip;
@@ -229,17 +210,17 @@ public class InputManager : MonoBehaviour
                 player2.clip = rightsuperattackclip;
                 player1.Play(); //audio in
                 player2.Play(); //audio in
-                //Debug.Log("Player 2ÀÇ °ø°İ ¼º°ø!");
+                //Debug.Log("Player 2ì˜ ê³µê²© ì„±ê³µ!");
                 HPmanager.Instance.player01HpDown(3);
                 player2Energy = 0; player1Energy = 0;
             }
         }
 
-        //ÇÃ·¹ÀÌ¾î1ÀÇ ±â¸ğÀ¸±â
+        //í”Œë ˆì´ì–´1ì˜ ê¸°ëª¨ìœ¼ê¸°
         if (player1Choice == Sign.Charge)
         {
             player1Energy++;
-            if(player2Choice == Sign.None)
+            if (player2Choice == Sign.None)
             {
                 AnimatorLeft.Instance.Charge();
                 player1.clip = leftchargeclip;
@@ -278,7 +259,7 @@ public class InputManager : MonoBehaviour
                 player2Energy--; player1Energy--;
                 if (player1Energy > 0)
                     player1Energy--;
-                //Debug.Log("Player 2ÀÇ °ø°İ ¼º°ø!");
+                //Debug.Log("Player 2ì˜ ê³µê²© ì„±ê³µ!");
                 HPmanager.Instance.player01HpDown(1);
             }
             else if (player2Choice == Sign.EnergyPa)
@@ -289,17 +270,17 @@ public class InputManager : MonoBehaviour
                 player2.clip = rightsuperattackclip;
                 player1.Play(); //audio in
                 player2.Play(); //audio in
-                //Debug.Log("Player 2ÀÇ °ø°İ ¼º°ø!");
+                //Debug.Log("Player 2ì˜ ê³µê²© ì„±ê³µ!");
                 HPmanager.Instance.player01HpDown(3);
                 player2Energy = 0; //player1Energy = 0;
-                player1Energy = 0; //¼öÁ¤
+                player1Energy = 0; //ìˆ˜ì •
             }
         }
 
-        //ÇÃ·¹ÀÌ¾î1ÀÇ ¿¡³ÊÁöÆÄ
+        //í”Œë ˆì´ì–´1ì˜ ì—ë„ˆì§€íŒŒ
         if (player1Choice == Sign.EnergyPa)
         {
-            if(player2Choice == Sign.None)
+            if (player2Choice == Sign.None)
             {
                 AnimatorLeft.Instance.EnergyPa();
                 AnimatorRight.Instance.Damaged();
@@ -319,7 +300,7 @@ public class InputManager : MonoBehaviour
                 player1.Play(); //audio in
                 player2.Play(); //audio in
                 player2Energy = 0;
-                //Debug.Log("Player 1ÀÇ °ø°İ ¼º°ø!");
+                //Debug.Log("Player 1ì˜ ê³µê²© ì„±ê³µ!");
                 HPmanager.Instance.player02HpDown(3);
             }
             else if (player2Choice == Sign.Block)
@@ -331,7 +312,7 @@ public class InputManager : MonoBehaviour
                 player1.Play(); //audio in
                 player2.Play(); //audio in
                 player2Energy = 0;
-                //Debug.Log("Player 1ÀÇ °ø°İ ¼º°ø!");
+                //Debug.Log("Player 1ì˜ ê³µê²© ì„±ê³µ!");
                 HPmanager.Instance.player02HpDown(3);
             }
             else if (player2Choice == Sign.Pa)
@@ -342,7 +323,7 @@ public class InputManager : MonoBehaviour
                 player2.clip = righthitclip;
                 player1.Play(); //audio in
                 player2.Play(); //audio in
-                //Debug.Log("Player 1ÀÇ °ø°İ ¼º°ø!");
+                //Debug.Log("Player 1ì˜ ê³µê²© ì„±ê³µ!");
                 HPmanager.Instance.player02HpDown(3);
                 player2Energy = 0;
             }
@@ -354,14 +335,14 @@ public class InputManager : MonoBehaviour
                 player2.clip = rightsuperattackclip;
                 player1.Play(); //audio in
                 player2.Play(); //audio in
-                //Debug.Log("¿¡³ÊÁöÆÄ »ó¼â");
+                //Debug.Log("ì—ë„ˆì§€íŒŒ ìƒì‡„");
                 player2Energy = 0;
             }
             player1Energy = 0;
         }
 
 
-        a++;
+        chanceCount++;
         ResetChoices();
     }
 
@@ -379,14 +360,14 @@ public class InputManager : MonoBehaviour
 
     private void Update()
     {
-        //Ãß°¡ÇÒºÎºĞ=====Å¸ÀÌ¹Ö¸Å´ÏÀúÀÇ ºÒº¯¼ö¸¦ °¡Á®¿Í¼­ »óÅÂ¼±ÅÃ°¡´ÉÇÑÁö·Î Å« Á¶°Ç¹® Ãß°¡ÇØÁÖ¼¼¿ä.====
-        //µğÆúÆ®(½Ã°£ ³» ¹Ì ÀÔ·Â)´Â Sign.NoneÀ¸·Î À¯ÁöÇØÁÖ½Ã¸é µË´Ï´Ù.
+        //ì¶”ê°€í• ë¶€ë¶„=====íƒ€ì´ë°ë§¤ë‹ˆì €ì˜ ë¶ˆë³€ìˆ˜ë¥¼ ê°€ì ¸ì™€ì„œ ìƒíƒœì„ íƒê°€ëŠ¥í•œì§€ë¡œ í° ì¡°ê±´ë¬¸ ì¶”ê°€í•´ì£¼ì„¸ìš”.====
+        //ë””í´íŠ¸(ì‹œê°„ ë‚´ ë¯¸ ì…ë ¥)ëŠ” Sign.Noneìœ¼ë¡œ ìœ ì§€í•´ì£¼ì‹œë©´ ë©ë‹ˆë‹¤.
         if (timingManager.CanInputChange)
         {
-            //=============Player01 Å°ÀÔ·Â===============
+            //=============Player01 í‚¤ì…ë ¥===============
             if (Input.GetKeyDown(KeyCode.Q))
             {
-                if(player1Energy == 0)
+                if (player1Energy == 0)
                 {
                     player1Choice = Sign.None;
                 }
@@ -407,10 +388,10 @@ public class InputManager : MonoBehaviour
                 player1Choice = Sign.Charge;
             }
 
-            //=============Player02 Å°ÀÔ·Â==============
+            //=============Player02 í‚¤ì…ë ¥==============
             if (Input.GetKeyDown(KeyCode.Keypad7))
             {
-                if( player2Energy == 0)
+                if (player2Energy == 0)
                 {
                     player2Choice = Sign.None;
                 }
@@ -431,13 +412,13 @@ public class InputManager : MonoBehaviour
                 player2Choice = Sign.Charge;
             }
         }
-//====================================================================
+        //====================================================================
 
 
         /*
         if(Input.GetKeyUp(KeyCode.Space))
         {
-            //ÀÏ´ÜÀº ½ºÆäÀÌ½º¹Ù·Î °á°úº¸¿©ÁÖ±â¿Í ¸®¼ÂÀ» Á¦¾î, ¸®µë½Ã½ºÅÛ Á¶Á¤½Ã ÀÌ ±â´É ¿Å°Ü°¥ ¿¹Á¤
+            //ì¼ë‹¨ì€ ìŠ¤í˜ì´ìŠ¤ë°”ë¡œ ê²°ê³¼ë³´ì—¬ì£¼ê¸°ì™€ ë¦¬ì…‹ì„ ì œì–´, ë¦¬ë“¬ì‹œìŠ¤í…œ ì¡°ì •ì‹œ ì´ ê¸°ëŠ¥ ì˜®ê²¨ê°ˆ ì˜ˆì •
             DetermineWinner();
         }
         */
